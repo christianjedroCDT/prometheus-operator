@@ -1110,6 +1110,11 @@ func checkReceivers(ctx context.Context, amc *monitoringv1alpha1.AlertmanagerCon
 			return err
 		}
 
+		err = checkJiraConfigs(ctx, receiver.JiraConfigs, amc.GetNamespace(), store, amVersion)
+		if err != nil {
+			return err
+		}
+
 		err = checkDiscordConfigs(ctx, receiver.DiscordConfigs, amc.GetNamespace(), store, amVersion)
 		if err != nil {
 			return err
@@ -1237,6 +1242,26 @@ func checkOpsGenieResponder(opsgenieResponder []monitoringv1alpha1.OpsGenieConfi
 			return fmt.Errorf("'teams' set in 'opsgenieResponder' but supported in Alertmanager >= 0.24.0 only")
 		}
 	}
+	return nil
+}
+
+func checkJiraConfigs(
+	ctx context.Context,
+	configs []monitoringv1alpha1.JiraConfig,
+	namespace string,
+	store *assets.StoreBuilder,
+	amVersion semver.Version,
+) error {
+	for _, config := range configs {
+		if err := checkHTTPConfig(config.HTTPConfig, amVersion); err != nil {
+			return err
+		}
+
+		if err := configureHTTPConfigInStore(ctx, config.HTTPConfig, namespace, store); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

@@ -190,6 +190,7 @@ type Receiver struct {
 	// List of MSTeams configurations.
 	// It requires Alertmanager >= 0.26.0.
 	MSTeamsConfigs []MSTeamsConfig `json:"msteamsConfigs,omitempty"`
+	JiraConfigs    []JiraConfig    `json:"jiraConfigs,omitempty"`
 }
 
 // PagerDutyConfig configures notifications via PagerDuty.
@@ -597,6 +598,46 @@ func (r *OpsGenieConfigResponder) Validate() error {
 		return nil
 	}
 	return fmt.Errorf("opsGenieConfig responder %v type does not match valid options %s", r, opsgenieValidTypesRe)
+}
+
+// JiraConfig configures notifications via Jira.
+// See https://prometheus.io/docs/alerting/latest/configuration/#jira_config
+type JiraConfig struct {
+	// Whether or not to notify about resolved alerts.
+	// +optional
+	SendResolved *bool `json:"sendResolved,omitempty"`
+	// HTTP client configuration.
+	// +optional
+	HTTPConfig *HTTPConfig `json:"httpConfig,omitempty"`
+	// The Jira API URL i.e. https://company.atlassian.net/rest/api/2/
+	// Provide if different from the default API URL.
+	// +optional
+	APIURL string `json:"apiURL,omitempty"`
+	// The project key where issues are created.
+	Project string `json:"project,omitempty"`
+	// Issue summary template.
+	Summary string `json:"summary,omitempty"`
+	// Issue description template.
+	Description string `json:"description,omitempty"`
+	// Priority of the issue.
+	Priority string `json:"priority,omitempty"`
+	// Type of the issue (e.g., Bug).
+	IssueType string `json:"issueType,omitempty"`
+	// Name of the workflow transition to resolve an issue.
+	ResolveTransition string `json:"resolveTransition,omitempty"`
+	// If reopen_transition is defined, ignore issues with that resolution.
+	WontFixResolution string `json:"wontFixResolution,omitempty"`
+	// If reopen_transition is defined, reopen the issue when it is not older than this value (rounded down to the nearest minute).
+	ReopenDuration string `json:"reopenDuration,omitempty"`
+	// Other issue and custom fields.
+	Fields map[string]any `json:"fields,omitempty"`
+	// Labels to be added to the issue.
+	Labels []string `json:"labels,omitempty"`
+}
+
+// Validate ensures JiraConfig is valid
+func (o *JiraConfig) Validate() error {
+	return nil
 }
 
 // HTTPConfig defines a client HTTP configuration.

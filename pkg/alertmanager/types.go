@@ -111,6 +111,7 @@ type receiver struct {
 	DiscordConfigs   []*discordConfig   `yaml:"discord_configs,omitempty"`
 	WebexConfigs     []*webexConfig     `yaml:"webex_configs,omitempty"`
 	MSTeamsConfigs   []*msTeamsConfig   `yaml:"msteams_configs,omitempty"`
+	JiraConfigs      []*jiraConfig      `yaml:"jira_configs,omitempty" json:"jira_configs,omitempty"`
 }
 
 type webhookConfig struct {
@@ -159,6 +160,22 @@ type opsgenieConfig struct {
 	UpdateAlerts  *bool               `yaml:"update_alerts,omitempty" json:"update_alerts,omitempty"`
 	Entity        string              `yaml:"entity,omitempty" json:"entity,omitempty"`
 	Actions       string              `yaml:"actions,omitempty" json:"actions,omitempty"`
+}
+
+type jiraConfig struct {
+	VSendResolved     *bool             `yaml:"send_resolved,omitempty" json:"send_resolved,omitempty"`
+	HTTPConfig        *httpClientConfig `yaml:"http_config,omitempty" json:"http_config,omitempty"`
+	APIURL            string            `yaml:"api_url,omitempty" json:"api_url,omitempty"`
+	Project           string            `yaml:"project,omitempty" json:"project,omitempty"`
+	Summary           string            `yaml:"summary,omitempty" json:"summary,omitempty"`
+	Description       string            `yaml:"description,omitempty" json:"description,omitempty"`
+	Priority          string            `yaml:"priority,omitempty" json:"priority,omitempty"`
+	IssueType         string            `yaml:"issue_type,omitempty" json:"issue_type,omitempty"`
+	ResolveTransition string            `yaml:"resolve_transition,omitempty" json:"resolve_transition,omitempty"`
+	WontFixResolution string            `yaml:"wont_fix_resolution,omitempty" json:"wont_fix_resolution,omitempty"`
+	ReopenDuration    string            `yaml:"reopen_duration,omitempty" json:"reopen_duration,omitempty"`
+	Fields            map[string]any    `yaml:"fields,omitempty" json:"fields,omitempty"`
+	Labels            []string          `yaml:"labels,omitempty" json:"labels,omitempty"`
 }
 
 type weChatConfig struct {

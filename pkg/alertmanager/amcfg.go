@@ -593,6 +593,18 @@ func (cb *configBuilder) convertReceiver(ctx context.Context, in *monitoringv1al
 		}
 	}
 
+	var jiraConfigs []*jiraConfig
+	if l := len(in.JiraConfigs); l > 0 {
+		jiraConfigs = make([]*jiraConfig, l)
+		for i := range in.JiraConfigs {
+			receiver, err := cb.convertJiraConfig(ctx, in.JiraConfigs[i], crKey)
+			if err != nil {
+				return nil, fmt.Errorf("JiraConfigs[%d]: %w", i, err)
+			}
+			jiraConfigs[i] = receiver
+		}
+	}
+
 	var weChatConfigs []*weChatConfig
 	if l := len(in.WeChatConfigs); l > 0 {
 		weChatConfigs = make([]*weChatConfig, l)
@@ -704,6 +716,7 @@ func (cb *configBuilder) convertReceiver(ctx context.Context, in *monitoringv1al
 		TelegramConfigs:  telegramConfigs,
 		WebexConfigs:     webexConfigs,
 		MSTeamsConfigs:   msTeamsConfigs,
+		JiraConfigs:      jiraConfigs,
 	}, nil
 }
 
@@ -971,6 +984,31 @@ func (cb *configBuilder) convertOpsgenieConfig(ctx context.Context, in monitorin
 		}
 	}
 	out.Responders = responders
+
+	httpConfig, err := cb.convertHTTPConfig(ctx, in.HTTPConfig, crKey)
+	if err != nil {
+		return nil, err
+	}
+	out.HTTPConfig = httpConfig
+
+	return out, nil
+}
+
+func (cb *configBuilder) convertJiraConfig(ctx context.Context, in monitoringv1alpha1.JiraConfig, crKey types.NamespacedName) (*jiraConfig, error) {
+	out := &jiraConfig{
+		VSendResolved:     in.SendResolved,
+		APIURL:            in.APIURL,
+		Project:           in.Project,
+		Summary:           in.Summary,
+		Description:       in.Description,
+		Priority:          in.Priority,
+		IssueType:         in.IssueType,
+		ResolveTransition: in.ResolveTransition,
+		WontFixResolution: in.WontFixResolution,
+		ReopenDuration:    in.ReopenDuration,
+		Fields:            in.Fields,
+		Labels:            in.Labels,
+	}
 
 	httpConfig, err := cb.convertHTTPConfig(ctx, in.HTTPConfig, crKey)
 	if err != nil {
