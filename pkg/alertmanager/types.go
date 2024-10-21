@@ -61,6 +61,7 @@ type globalConfig struct {
 	OpsGenieAPIURL       *config.URL     `yaml:"opsgenie_api_url,omitempty" json:"opsgenie_api_url,omitempty"`
 	OpsGenieAPIKey       string          `yaml:"opsgenie_api_key,omitempty" json:"opsgenie_api_key,omitempty"`
 	OpsGenieAPIKeyFile   string          `yaml:"opsgenie_api_key_file,omitempty" json:"opsgenie_api_key_file,omitempty"`
+	JiraAPIURL           *config.URL     `yaml:"jira_api_url,omitempty" json:"jira_api_url,omitempty"`
 	WeChatAPIURL         *config.URL     `yaml:"wechat_api_url,omitempty" json:"wechat_api_url,omitempty"`
 	WeChatAPISecret      string          `yaml:"wechat_api_secret,omitempty" json:"wechat_api_secret,omitempty"`
 	WeChatAPICorpID      string          `yaml:"wechat_api_corp_id,omitempty" json:"wechat_api_corp_id,omitempty"`
@@ -174,7 +175,7 @@ type jiraConfig struct {
 	ResolveTransition string            `yaml:"resolve_transition,omitempty" json:"resolve_transition,omitempty"`
 	WontFixResolution string            `yaml:"wont_fix_resolution,omitempty" json:"wont_fix_resolution,omitempty"`
 	ReopenDuration    string            `yaml:"reopen_duration,omitempty" json:"reopen_duration,omitempty"`
-	Fields            map[string]any    `yaml:"fields,omitempty" json:"fields,omitempty"`
+	Fields            map[string]string `yaml:"fields,omitempty" json:"fields,omitempty"`
 	Labels            []string          `yaml:"labels,omitempty" json:"labels,omitempty"`
 }
 

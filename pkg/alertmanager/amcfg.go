@@ -441,6 +441,18 @@ func (cb *configBuilder) convertGlobalConfig(ctx context.Context, in *monitoring
 		out.OpsGenieAPIURL = &config.URL{URL: u}
 	}
 
+	if in.JiraAPIURL != nil {
+		jiraAPIURL, err := cb.store.GetSecretKey(ctx, crKey.Namespace, *in.JiraAPIURL)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get OpsGenie API URL: %w", err)
+		}
+		u, err := url.Parse(jiraAPIURL)
+		if err != nil {
+			return nil, fmt.Errorf("parse OpsGenie API URL: %w", err)
+		}
+		out.JiraAPIURL = &config.URL{URL: u}
+	}
+
 	if in.OpsGenieAPIKey != nil {
 		opsGenieAPIKey, err := cb.store.GetSecretKey(ctx, crKey.Namespace, *in.OpsGenieAPIKey)
 		if err != nil {
@@ -2017,6 +2029,12 @@ func (r *receiver) sanitize(amVersion semver.Version, logger *slog.Logger) error
 		}
 	}
 
+	for _, conf := range r.JiraConfigs {
+		if err := conf.sanitize(amVersion, withLogger); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -2085,6 +2103,13 @@ func (ogc *opsgenieConfig) sanitize(amVersion semver.Version, logger *slog.Logge
 func (ops *opsgenieResponder) sanitize(amVersion semver.Version) error {
 	if ops.Type == "teams" && amVersion.LT(semver.MustParse("0.24.0")) {
 		return fmt.Errorf("'teams' set in 'opsgenieResponder' but supported in Alertmanager >= 0.24.0 only")
+	}
+	return nil
+}
+
+func (ogc *jiraConfig) sanitize(amVersion semver.Version, logger *slog.Logger) error {
+	if err := ogc.HTTPConfig.sanitize(amVersion, logger); err != nil {
+		return err
 	}
 	return nil
 }
