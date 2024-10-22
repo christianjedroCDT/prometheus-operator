@@ -74,7 +74,7 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go v1.54.19 // indirect
+	github.com/aws/aws-sdk-go v1.55.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dennwc/varint v1.0.0 // indirect
@@ -147,3 +147,6 @@ replace (
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring => ./pkg/apis/monitoring
 	github.com/prometheus-operator/prometheus-operator/pkg/client => ./pkg/client
 )
+
+// v.0.26.1 seems older but this is related to last tag on main being v0.26.1, it´s still using main
+replace github.com/prometheus/alertmanager => github.com/prometheus/alertmanager v0.26.1-0.20241016143126-4fcb18ee41ec

@@ -88,9 +88,9 @@ extract_certs() {
 	local ca key cert
 
 	API_SERVER=$(kubectl config view -o jsonpath="{$cluster.server}")
-	ca=$(kubectl config view --raw -o jsonpath="{$cluster.certificate-authority-data}" | base64 -d)
-	key=$(kubectl config view --raw -o jsonpath="{$user.client-key-data}" | base64 -d)
-	cert=$(kubectl config view --raw -o jsonpath="{$user.client-certificate-data}" | base64 -d)
+	ca=$(cat /Users/christianjedro/.minikube/ca.crt)
+	key=$(cat /Users/christianjedro/.minikube/profiles/minikube/client.key)
+	cert=$(cat /Users/christianjedro/.minikube/profiles/minikube/client.crt)
 
 	local fail=0
 	[[ -z "$API_SERVER" ]] && {

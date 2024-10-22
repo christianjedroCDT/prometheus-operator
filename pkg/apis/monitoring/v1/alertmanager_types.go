@@ -345,6 +345,9 @@ type AlertmanagerGlobalConfig struct {
 	// The default OpsGenie API Key.
 	OpsGenieAPIKey *v1.SecretKeySelector `json:"opsGenieApiKey,omitempty"`
 
+	// The default Jira API URL.
+	JiraAPIURL *string `json:"jiraApiUrl,omitempty"`
+
 	// The default Pagerduty URL.
 	PagerdutyURL *string `json:"pagerdutyUrl,omitempty"`
 }

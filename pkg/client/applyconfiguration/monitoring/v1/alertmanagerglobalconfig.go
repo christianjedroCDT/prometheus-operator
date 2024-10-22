@@ -30,6 +30,7 @@ type AlertmanagerGlobalConfigApplyConfiguration struct {
 	SlackAPIURL    *corev1.SecretKeySelector           `json:"slackApiUrl,omitempty"`
 	OpsGenieAPIURL *corev1.SecretKeySelector           `json:"opsGenieApiUrl,omitempty"`
 	OpsGenieAPIKey *corev1.SecretKeySelector           `json:"opsGenieApiKey,omitempty"`
+	JiraAPIURL     *string                             `json:"jiraApiUrl,omitempty"`
 	PagerdutyURL   *string                             `json:"pagerdutyUrl,omitempty"`
 }
 
@@ -84,6 +85,14 @@ func (b *AlertmanagerGlobalConfigApplyConfiguration) WithOpsGenieAPIURL(value co
 // If called multiple times, the OpsGenieAPIKey field is set to the value of the last call.
 func (b *AlertmanagerGlobalConfigApplyConfiguration) WithOpsGenieAPIKey(value corev1.SecretKeySelector) *AlertmanagerGlobalConfigApplyConfiguration {
 	b.OpsGenieAPIKey = &value
+	return b
+}
+
+// WithJiraAPIURL sets the JiraAPIURL field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the JiraAPIURL field is set to the value of the last call.
+func (b *AlertmanagerGlobalConfigApplyConfiguration) WithJiraAPIURL(value string) *AlertmanagerGlobalConfigApplyConfiguration {
+	b.JiraAPIURL = &value
 	return b
 }
 

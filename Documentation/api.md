@@ -5034,6 +5034,17 @@ Kubernetes core/v1.SecretKeySelector
 </tr>
 <tr>
 <td>
+<code>jiraApiUrl</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<p>The default Jira API URL.</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>pagerdutyUrl</code><br/>
 <em>
 string
@@ -21716,7 +21727,7 @@ string
 <h3 id="monitoring.coreos.com/v1alpha1.HTTPConfig">HTTPConfig
 </h3>
 <p>
-(<em>Appears on:</em><a href="#monitoring.coreos.com/v1alpha1.DiscordConfig">DiscordConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.MSTeamsConfig">MSTeamsConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.OpsGenieConfig">OpsGenieConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.PagerDutyConfig">PagerDutyConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.PushoverConfig">PushoverConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.SNSConfig">SNSConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.SlackConfig">SlackConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.TelegramConfig">TelegramConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.VictorOpsConfig">VictorOpsConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.WeChatConfig">WeChatConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.WebexConfig">WebexConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.WebhookConfig">WebhookConfig</a>)
+(<em>Appears on:</em><a href="#monitoring.coreos.com/v1alpha1.DiscordConfig">DiscordConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.JiraConfig">JiraConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.MSTeamsConfig">MSTeamsConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.OpsGenieConfig">OpsGenieConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.PagerDutyConfig">PagerDutyConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.PushoverConfig">PushoverConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.SNSConfig">SNSConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.SlackConfig">SlackConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.TelegramConfig">TelegramConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.VictorOpsConfig">VictorOpsConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.WeChatConfig">WeChatConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.WebexConfig">WebexConfig</a>, <a href="#monitoring.coreos.com/v1alpha1.WebhookConfig">WebhookConfig</a>)
 </p>
 <div>
 <p>HTTPConfig defines a client HTTP configuration.
@@ -22476,6 +22487,174 @@ bool
 <td>
 <em>(Optional)</em>
 <p>Configure whether to enable HTTP2.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="monitoring.coreos.com/v1alpha1.JiraConfig">JiraConfig
+</h3>
+<p>
+(<em>Appears on:</em><a href="#monitoring.coreos.com/v1alpha1.Receiver">Receiver</a>)
+</p>
+<div>
+<p>JiraConfig configures notifications via Jira.
+See <a href="https://prometheus.io/docs/alerting/latest/configuration/#jira_config">https://prometheus.io/docs/alerting/latest/configuration/#jira_config</a></p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>sendResolved</code><br/>
+<em>
+bool
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Whether or not to notify about resolved alerts.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>httpConfig</code><br/>
+<em>
+<a href="#monitoring.coreos.com/v1alpha1.HTTPConfig">
+HTTPConfig
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>HTTP client configuration.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>apiURL</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>The Jira API URL i.e. <a href="https://company.atlassian.net/rest/api/2/">https://company.atlassian.net/rest/api/2/</a>
+Provide if different from the default API URL.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>project</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<p>The project key where issues are created.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>summary</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Issue summary template.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>description</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Issue description template.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>priority</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Priority of the issue.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>issueType</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Type of the issue (e.g., Bug).</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>resolveTransition</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Name of the workflow transition to resolve an issue.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>wontFixResolution</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<p>If reopen_transition is defined, ignore issues with that resolution.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>reopenDuration</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<p>If reopen_transition is defined, reopen the issue when it is not older than this value (rounded down to the nearest minute).</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>fields</code><br/>
+<em>
+map[string]string
+</em>
+</td>
+<td>
+<p>Other issue and custom fields.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>labels</code><br/>
+<em>
+[]string
+</em>
+</td>
+<td>
+<p>Labels to be added to the issue.</p>
 </td>
 </tr>
 </tbody>
@@ -27136,6 +27315,20 @@ string
 <td>
 <p>List of MSTeams configurations.
 It requires Alertmanager &gt;= 0.26.0.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>jiraConfigs</code><br/>
+<em>
+<a href="#monitoring.coreos.com/v1alpha1.JiraConfig">
+[]JiraConfig
+</a>
+</em>
+</td>
+<td>
+<p>List of Jira configurations.
+It requires Alertmanager &gt;= 0.27.0.</p>
 </td>
 </tr>
 </tbody>

@@ -1813,6 +1813,9 @@ spec:
                                 type: string
                             type: object
                         type: object
+                      jiraApiUrl:
+                        description: The default Jira API URL.
+                        type: string
                       opsGenieApiKey:
                         description: The default OpsGenie API Key.
                         properties:

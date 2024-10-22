@@ -17,12 +17,14 @@ package alertmanager
 import (
 	"context"
 	"crypto/tls"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log/slog"
 	"net"
 	"net/url"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 
@@ -442,13 +444,9 @@ func (cb *configBuilder) convertGlobalConfig(ctx context.Context, in *monitoring
 	}
 
 	if in.JiraAPIURL != nil {
-		jiraAPIURL, err := cb.store.GetSecretKey(ctx, crKey.Namespace, *in.JiraAPIURL)
+		u, err := url.Parse(*in.JiraAPIURL)
 		if err != nil {
-			return nil, fmt.Errorf("failed to get OpsGenie API URL: %w", err)
-		}
-		u, err := url.Parse(jiraAPIURL)
-		if err != nil {
-			return nil, fmt.Errorf("parse OpsGenie API URL: %w", err)
+			return nil, fmt.Errorf("parse Jira API URL: %w", err)
 		}
 		out.JiraAPIURL = &config.URL{URL: u}
 	}
@@ -1018,16 +1016,38 @@ func (cb *configBuilder) convertJiraConfig(ctx context.Context, in monitoringv1a
 		ResolveTransition: in.ResolveTransition,
 		WontFixResolution: in.WontFixResolution,
 		ReopenDuration:    in.ReopenDuration,
-		Fields:            in.Fields,
 		Labels:            in.Labels,
 	}
+
+	fields := make(map[string]any, len(in.Fields))
+	for key, value := range in.Fields {
+		// Try to parse as JSON first (for maps, lists, etc.)
+		var parsed interface{}
+		if json.Unmarshal([]byte(value), &parsed) == nil {
+			// If the JSON parsing was successful, store it as a complex type
+			fields[key] = parsed
+		} else {
+			// Otherwise, try to convert the string to its original type
+			if intVal, err := strconv.Atoi(value); err == nil {
+				fields[key] = intVal
+			} else if floatVal, err := strconv.ParseFloat(value, 64); err == nil {
+				fields[key] = floatVal
+			} else if boolVal, err := strconv.ParseBool(value); err == nil {
+				fields[key] = boolVal
+			} else {
+				// If no type conversion was possible, keep it as a string
+				fields[key] = value
+			}
+		}
+	}
+
+	out.Fields = fields
 
 	httpConfig, err := cb.convertHTTPConfig(ctx, in.HTTPConfig, crKey)
 	if err != nil {
 		return nil, err
 	}
 	out.HTTPConfig = httpConfig
-
 	return out, nil
 }
 

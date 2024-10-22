@@ -190,7 +190,9 @@ type Receiver struct {
 	// List of MSTeams configurations.
 	// It requires Alertmanager >= 0.26.0.
 	MSTeamsConfigs []MSTeamsConfig `json:"msteamsConfigs,omitempty"`
-	JiraConfigs    []JiraConfig    `json:"jiraConfigs,omitempty"`
+	// List of Jira configurations.
+	// It requires Alertmanager >= 0.27.0.
+	JiraConfigs []JiraConfig `json:"jiraConfigs,omitempty"`
 }
 
 // PagerDutyConfig configures notifications via PagerDuty.
@@ -630,7 +632,7 @@ type JiraConfig struct {
 	// If reopen_transition is defined, reopen the issue when it is not older than this value (rounded down to the nearest minute).
 	ReopenDuration string `json:"reopenDuration,omitempty"`
 	// Other issue and custom fields.
-	Fields map[string]any `json:"fields,omitempty"`
+	Fields map[string]string `json:"fields,omitempty"`
 	// Labels to be added to the issue.
 	Labels []string `json:"labels,omitempty"`
 }

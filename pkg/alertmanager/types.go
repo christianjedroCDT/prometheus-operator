@@ -175,7 +175,8 @@ type jiraConfig struct {
 	ResolveTransition string            `yaml:"resolve_transition,omitempty" json:"resolve_transition,omitempty"`
 	WontFixResolution string            `yaml:"wont_fix_resolution,omitempty" json:"wont_fix_resolution,omitempty"`
 	ReopenDuration    string            `yaml:"reopen_duration,omitempty" json:"reopen_duration,omitempty"`
-	Fields            map[string]string `yaml:"fields,omitempty" json:"fields,omitempty"`
+	ReopenTransition  string            `yaml:"reopen_transition,omitempty" json:"reopen_transition,omitempty"`
+	Fields            map[string]any    `yaml:"fields,omitempty" json:"fields,omitempty"`
 	Labels            []string          `yaml:"labels,omitempty" json:"labels,omitempty"`
 }
 
